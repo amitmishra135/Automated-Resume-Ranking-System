@@ -1,0 +1,13 @@
+INFO:root:CPU Usage: 50.0%, Memory Usage: 75.4%
+INFO:root:CPU Usage: 15.5%, Memory Usage: 76.2%
+INFO:root:CPU Usage: 15.2%, Memory Usage: 75.4%
+INFO:root:CPU Usage: 19.0%, Memory Usage: 75.8%
+INFO:root:CPU Usage: 46.2%, Memory Usage: 78.1%
+INFO:root:CPU Usage: 100.0%, Memory Usage: 71.4%
+WARNING:root:ALERT: High resource usage detected! CPU Usage: 100.0%, Memory Usage: 71.4%
+INFO:root:CPU Usage: 14.3%, Memory Usage: 72.0%
+INFO:root:CPU Usage: 25.0%, Memory Usage: 72.2%
+INFO:root:CPU Usage: 100.0%, Memory Usage: 73.9%
+WARNING:root:ALERT: High resource usage detected! CPU Usage: 100.0%, Memory Usage: 73.9%
+INFO:root:CPU Usage: 9.4%, Memory Usage: 71.1%
+INFO:root:CPU Usage: 5.1%, Memory Usage: 71.6%

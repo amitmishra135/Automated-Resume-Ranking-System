@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Ranking System</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        textarea, input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f4f8;
+            border-radius: 4px;
+            border-left: 5px solid #3498db;
+        }
+        .error {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .loading {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        .loading:after {
+            content: '.';
+            animation: dots 1s steps(5, end) infinite;
+        }
+        @keyframes dots {
+            0%, 20% {
+                color: rgba(0,0,0,0);
+                text-shadow:
+                    .25em 0 0 rgba(0,0,0,0),
+                    .5em 0 0 rgba(0,0,0,0);
+            }
+            40% {
+                color: #333;
+                text-shadow:
+                    .25em 0 0 rgba(0,0,0,0),
+                    .5em 0 0 rgba(0,0,0,0);
+            }
+            60% {
+                text-shadow:
+                    .25em 0 0 #333,
+                    .5em 0 0 rgba(0,0,0,0);
+            }
+            80%, 100% {
+                text-shadow:
+                    .25em 0 0 #333,
+                    .5em 0 0 #333;
+            }
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            $('#rankForm').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                
+                $('.loading').show();
+                $('#result').html('').removeClass('error');
+                
+                $.ajax({
+                    url: '/rank_resume',
+                    type: 'post',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        $('.loading').hide();
+                        if (response.error) {
+                            $('#result').html('Error: ' + response.error).addClass('error');
+                        } else {
+                            $('#result').html('Similarity Score: ' + (response.similarity_score * 100).toFixed(2) + '%' + 
+                                              '<br>Ranking: ' + (response.ranking == 1 ? 'Suitable' : 'Not Suitable'));
+                        }
+                    },
+                    error: function() {
+                        $('.loading').hide();
+                        $('#result').html('An error occurred while processing the request.').addClass('error');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Resume Ranking System</h1>
+    <form id="rankForm" enctype="multipart/form-data">
+        <label for="job_description">Job Description:</label>
+        <textarea id="job_description" name="job_description" rows="10" required></textarea>
+        
+        <label for="resume">Resume (PDF only):</label>
+        <input type="file" id="resume" name="resume" accept=".pdf" required>
+        
+        <input type="submit" value="Rank Resume">
+    </form>
+    <div class="loading">Processing</div>
+    <div id="result"></div>
+</body>
+</html>
